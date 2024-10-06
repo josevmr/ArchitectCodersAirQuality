@@ -16,7 +16,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 
-const val DEFAULT_COORDINATES = "40.4168,-3.7038"
 const val DEFAULT_CITY = "Madrid"
 
 

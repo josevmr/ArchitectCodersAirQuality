@@ -1,8 +1,5 @@
 package com.practica.calidadaire.data.model
 
-import androidx.compose.ui.platform.LocalContext
-import com.practica.calidadaire.R
-
 
 data class HomeDataModel (
     val id: Int = 0,

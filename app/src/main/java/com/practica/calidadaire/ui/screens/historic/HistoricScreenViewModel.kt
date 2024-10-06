@@ -24,11 +24,10 @@ class HistoricScreenViewModel: ViewModel() {
 
             val today = LocalDate.now()
             val before7days = today.minusDays(7)
-            val historicDataList = repository.fetchHistoricData(before7days.toString(), today.toString(), location)
 
             state = UiState(
                 loading = false,
-                data = historicDataList
+                data = repository.fetchHistoricData(before7days.toString(), today.toString(), location)
             )
         }
     }

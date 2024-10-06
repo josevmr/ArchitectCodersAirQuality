@@ -1,9 +1,7 @@
 package com.practica.calidadaire.ui.utils
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import com.practica.calidadaire.ui.models.QualityColorModel
 import com.practica.calidadaire.R
+import com.practica.calidadaire.ui.models.QualityColorModel
 
 object QualityColorBuilders {
 
