@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="goodColor">#FF86c810</color>
+    <color name="moderateColor">#FFFFC300</color>
+    <color name="unhealthySensibleColor">#FFf68e20</color>
+    <color name="unhealthyColor">#FFC70039</color>
+    <color name="veryUnhealthyColor">#FF6c4385</color>
+    <color name="hazardousColor">#FF900C3F</color>
+    <color name="borderColor">#FFB1D18A</color>
+    <color name="defaultColor">#FF888888</color>
 </resources>

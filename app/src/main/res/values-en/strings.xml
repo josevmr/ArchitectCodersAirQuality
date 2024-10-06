@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calidad Aire</string>
+
+    <!--Descriptions-->
+    <string name="pm25_title">PM2.5 (Fine Particulate Matter):</string>
+    <string name="pm25_description"> PM2.5 particles are small solid or liquid particles with a diameter of 2.5 microns or less. These particles are small enough to penetrate deeply into the lungs and can have serious health effects, especially for people with respiratory problems.</string>
+    <string name="pm10_title">PM10 (Coarser Particulate Matter):</string>
+    <string name="pm10_description"> Similar to PM2.5 but with a size of up to 10 microns. Although they are not as small as PM2.5, they can still cause respiratory issues when inhaled.</string>
+    <string name="ozone_title">O₃ (Tropospheric Ozone):</string>
+    <string name="ozone_description"> Tropospheric ozone is a pollutant formed when nitrogen oxides (NOₓ) and volatile organic compounds (VOCs) react in the presence of sunlight. It can cause respiratory problems and affect vegetation.</string>
+    <string name="no2_title">NO₂ (Nitrogen Dioxide):</string>
+    <string name="no2_description"> It is a toxic gas that can cause irritation in the lungs. It is primarily formed from the burning of fossil fuels and is a precursor to tropospheric ozone.</string>
+    <string name="so2_title">SO₂ (Sulfur Dioxide):</string>
+    <string name="so2_description"> This irritating gas can affect the respiratory system and contribute to the formation of acid rain. It is especially harmful to people with lung diseases.</string>
+    <string name="co_title">CO (Carbon Monoxide):</string>
+    <string name="co_description"> An odorless and colorless gas that can be dangerous at high concentrations because it prevents the body from transporting oxygen properly. It can cause dizziness, fatigue, and in extreme cases, death.</string>
+    <string name="bc_title">BC (Black Carbon):</string>
+    <string name="bc_description"> It is a fine particulate pollutant produced by the incomplete combustion of fossil fuels and biomass. It contributes to climate change by absorbing sunlight and can affect respiratory health.</string>
+    <string name="no_title">NO (Nitric Oxide):</string>
+    <string name="no_description"> This colorless and odorless gas is a pollutant primarily formed from the burning of fossil fuels. While in small amounts it can play a role in regulating blood flow and blood pressure, in high concentrations it is toxic and can cause irritation in the eyes, nose, and throat, as well as respiratory problems. Additionally, nitric oxide can react in the atmosphere to form nitrogen dioxide (NO₂), a more harmful pollutant.</string>
+    <string name="not_found_location">Location not found</string>
+
+    <string name="um003_title_with_unit">UM003 particles/cm³</string>
+    <string name="pm1_title_with_unit">PM1 µg/m³</string>
+    <string name="pm10_title_with_unit">PM10 µg/m³</string>
+    <string name="relative_humidity_title_with_unit">Relative Humidity %</string>
+    <string name="temperature_with_unit">Temperature ºC</string>
+    <string name="pm25_title_with_unit">PM25 µg/m³</string>
+    <string name="no2_title_with_unit">Nitrogen Dioxide µg/m³</string>
+    <string name="nox_title_with_unit">Nitrogen Oxides µg/m³</string>
+    <string name="no_title_with_unit">Nitric Oxide µg/m³</string>
+    <string name="o3_title_with_unit">Ozone µg/m³</string>
+    <string name="co_title_with_unit">Carbon Monoxide µg/m³</string>
+    <string name="so2_title_with_unit">Sulfur Dioxide µg/m³</string>
+    <string name="gas_particles_information">-- Gas and Particles Information --</string>
+    <string name="see_historic_7_days">View history of the last 7 days</string>
+    <string name="parameters">Parameters</string>
+    <string name="air_quality">Air Quality</string>
+    <string name="back">Back</string>
+    <string name="last_7_days">Last 7 Days History</string>
+    <string name="date">Date: %1$s</string>
+    <string name="parameter">Parameter: </string>
+    <string name="average">, Average: </string>
+</resources>
