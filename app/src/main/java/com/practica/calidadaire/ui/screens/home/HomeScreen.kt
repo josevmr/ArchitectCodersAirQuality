@@ -1,6 +1,5 @@
 package com.practica.calidadaire.ui.screens.home
 
-import android.Manifest
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
@@ -18,9 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,20 +24,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,13 +57,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.practica.calidadaire.R
-import com.practica.calidadaire.data.model.AirCoordinates
 import com.practica.calidadaire.data.model.AirParameter
 import com.practica.calidadaire.ui.utils.QualityColorBuilders
-import com.practica.calidadaire.ui.utils.extensions.PermissionRequestEffect
-import com.practica.calidadaire.ui.utils.extensions.getCoordinates
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -73,43 +68,59 @@ fun HomeScreen(
     onClick: (String) -> Unit,
     vm: HomeViewModel = viewModel()
 ) {
+    val state by vm.state.collectAsState()
+    val homeState = rememberHomeState()
 
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-    var coordinates: AirCoordinates
-
-    PermissionRequestEffect(permission = Manifest.permission.ACCESS_COARSE_LOCATION) { granted ->
-        if (granted) {
-            coroutineScope.launch {
-                coordinates = context.getCoordinates()
-                vm.onUiReady(coordinates)
-            }
-        } else {
-            vm.getDefaultData()
-        }
+    homeState.AskCoordinatesEffect { coordinates ->
+        if (coordinates != null) vm.onUiReady(coordinates) else vm.onPermissionDenied()
     }
+    if (state.message.isNotEmpty()) {
+        homeState.ShowMessageEffect(message = state.message) {
+            vm.onMessageShown()
+        }
+
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        val state = vm.state
-
-        if (state.loading) {
+        Scaffold(
+            snackbarHost = { SnackbarHost(hostState = homeState.snackbarHostState) }
+        ) { padding ->
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            Screen(
-                vm = vm,
-                modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 48.dp),
-                onHistoricClick = { onClick(state.data.name) }
-            )
+                    .padding(padding)
+            ) {
+
+                if (state.loading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    Screen(
+                        vm = vm,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 48.dp),
+                        onHistoricClick = { onClick(state.data.name) }
+                    )
+                }
+                if (state.isPermissionDeniedVisible){
+                    PermissionDeniedCard(
+                        onOpenSettings = {
+                            vm.onSettingsButtonClicked()
+                            homeState.openAppSettings()
+                        },
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
+                }
+            }
         }
     }
 }
@@ -122,7 +133,7 @@ private fun Screen(
     onHistoricClick: () -> Unit
 ) {
 
-    val state = vm.state
+    val state by vm.state.collectAsState()
     val airQualityIndex = vm.calculateAirQualityIndex()
 
     Column(
@@ -164,7 +175,7 @@ private fun Screen(
                         .clip(CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    ShowContent(qualityColorModel.image,airQualityIndex)
+                    ShowContent(qualityColorModel.image, airQualityIndex)
                 }
             }
 
@@ -189,11 +200,10 @@ private fun Screen(
                 text = stringResource(R.string.parameters),
                 fontSize = 16.sp
             )
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(8.dp))
 
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(150.dp),
-                modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp),
+            LazyColumn(
+                modifier = Modifier.padding(vertical = 6.dp),
                 content = {
                     items(state.data.parameters) { item ->
                         ParameterItemList(vm, item)
@@ -266,7 +276,7 @@ private fun ExpandCard(vm: HomeViewModel) {
     var isExpanded by remember { mutableStateOf(false) }
 
     val cardHeight by animateDpAsState(
-        targetValue = if (isExpanded) 500.dp else 60.dp,
+        targetValue = if (isExpanded) 500.dp else 100.dp,
         animationSpec = tween(durationMillis = 300),
         label = "Animation"
     )
@@ -309,7 +319,7 @@ fun AirQualityDescriptions(vm: HomeViewModel) {
 
     val descriptions = vm.getDescriptions()
 
-    Text (
+    Text(
         text = stringResource(R.string.gas_particles_information),
         fontWeight = FontWeight.Bold
     )
@@ -319,13 +329,13 @@ fun AirQualityDescriptions(vm: HomeViewModel) {
     ) {
 
 
-        items(descriptions.toList()) {(first, second) ->
+        items(descriptions.toList()) { (first, second) ->
             val title = context.getString(first)
             val desc = context.getString(second)
 
-            Text (
+            Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                         append(title)
                     }
                     append(desc)
@@ -340,16 +350,47 @@ fun AirQualityDescriptions(vm: HomeViewModel) {
 @Composable
 fun ParameterItemList(vm: HomeViewModel, parameter: AirParameter) {
     val context = LocalContext.current
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Text (
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
             text = vm.getParameterTitle(parameter.parameter, context),
             fontWeight = FontWeight.Bold,
         )
-        Text (
-            text = "${parameter.lastValue}"
+        Text(
+            text = "  ${parameter.lastValue}"
         )
+    }
+}
+
+@Composable
+fun PermissionDeniedCard(onOpenSettings: () -> Unit, modifier: Modifier) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.settings_title),
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.settings_text)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = onOpenSettings) {
+                Text(text = stringResource(R.string.open_settings))
+            }
+        }
     }
 }

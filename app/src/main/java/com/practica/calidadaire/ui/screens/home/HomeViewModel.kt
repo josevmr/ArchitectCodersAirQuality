@@ -1,15 +1,16 @@
 package com.practica.calidadaire.ui.screens.home
 
 import android.content.Context
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practica.calidadaire.R
 import com.practica.calidadaire.data.DataRepository
 import com.practica.calidadaire.data.model.AirCoordinates
 import com.practica.calidadaire.data.model.HomeDataModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -20,48 +21,56 @@ import kotlin.math.sqrt
 
 class HomeViewModel : ViewModel() {
 
-    var state by mutableStateOf(UiState())
-        private set
+    private var _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
 
     private val repository = DataRepository()
     fun onUiReady(coordinates: AirCoordinates) {
         viewModelScope.launch {
-            state = UiState(loading = true)
+            _state.value = UiState(loading = true)
 
             val formattedCoordinates = formatCoordinates(coordinates)
             val cityDataList = repository.fetchLocationsData(formattedCoordinates)
             val nearestStationData = findNearestHomeData(coordinates, cityDataList)
-            state = UiState(
+            _state.value = UiState(
                 loading = false,
                 data = nearestStationData
             )
         }
     }
 
-    inner class UiState(
+    data class UiState(
         val loading: Boolean = true,
-        val data: HomeDataModel = HomeDataModel()
+        val data: HomeDataModel = HomeDataModel(),
+        val message: String = "",
+        val isPermissionDeniedVisible: Boolean = false
     )
 
-    fun getDefaultData() {
-        state = UiState(
-            loading = false,
-            data = HomeDataModel()
-        )
+    fun onPermissionDenied() {
+        _state.update { it.copy(
+            message = ("Necesitas dar permiso en ajustes"),
+            isPermissionDeniedVisible = true
+        ) }
+    }
+    fun onMessageShown(){
+        _state.update { it.copy(message = ("")) }
+    }
+    fun onSettingsButtonClicked(){
+        _state.update { it.copy(isPermissionDeniedVisible = false)}
     }
 
     private fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val R = 6371.0 // Earth radius in kilometers
+        val r = 6371.0 // Earth radius in kilometers
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2) * sin(dLat / 2) +
                 cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
                 sin(dLon / 2) * sin(dLon / 2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return R * c // Distance in kilometers
+        return r * c // Distance in kilometers
     }
 
-    fun findNearestHomeData(userCoordinates: AirCoordinates, homeDataList: List<HomeDataModel>): HomeDataModel {
+    private fun findNearestHomeData(userCoordinates: AirCoordinates, homeDataList: List<HomeDataModel>): HomeDataModel {
         return homeDataList.minByOrNull { homeData ->
             haversine(
                 userCoordinates.latitude,
@@ -72,7 +81,7 @@ class HomeViewModel : ViewModel() {
         } ?: HomeDataModel()
     }
 
-    fun formatCoordinates(coordinate: AirCoordinates): String {
+    private fun formatCoordinates(coordinate: AirCoordinates): String {
         val latitude = Math.round(coordinate.latitude * 10000.0) / 10000.0
         val longitude = Math.round(coordinate.longitude * 10000.0) / 10000.0
 
@@ -98,7 +107,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun calculateAirQualityIndex(): Double {
-        val index = state.data.parameters.map { parameter ->
+        val index = _state.value.data.parameters.map { parameter ->
             when (parameter.parameter) {
                 "pm25" -> calculatePM25(parameter.lastValue)
                 "pm10" -> calculatePM10(parameter.lastValue)

@@ -21,6 +21,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -68,7 +70,8 @@ fun HistoricScreen(
 
 @Composable
 private fun ShowHistoricScreen(modifier: Modifier, vm: HistoricScreenViewModel) {
-    val itemList = vm.calculateAverageByParameter(vm.state.data)
+    val state by vm.state.collectAsState()
+    val itemList = vm.calculateAverageByParameter(state.data)
 
     Column(
         modifier = modifier
