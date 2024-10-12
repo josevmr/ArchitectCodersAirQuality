@@ -42,7 +42,7 @@
     <string name="parameter">"Parámetro: "</string>
     <string name="average">", Promedio: "</string>
     <string name="open_settings">Abrir Ajustes</string>
-    <string name="settings_text">Necesitas habilitar el permiso de ubicación en los ajustes para obtener datos de tu localización.</string>
-    <string name="settings_title">Permiso de ubicación necesario</string>
+    <string name="settings_text" translatable="false">Necesitas habilitar el permiso de ubicación en los ajustes para obtener datos de tu localización.</string>
+    <string name="settings_title" translatable="false">Permiso de ubicación necesario</string>
 
 </resources>
