@@ -21,17 +21,14 @@
     <string name="no_description"> This colorless and odorless gas is a pollutant primarily formed from the burning of fossil fuels. While in small amounts it can play a role in regulating blood flow and blood pressure, in high concentrations it is toxic and can cause irritation in the eyes, nose, and throat, as well as respiratory problems. Additionally, nitric oxide can react in the atmosphere to form nitrogen dioxide (NO₂), a more harmful pollutant.</string>
     <string name="not_found_location">Location not found</string>
 
-    <string name="um003_title_with_unit">UM003 particles/cm³</string>
-    <string name="pm1_title_with_unit">PM1 µg/m³</string>
-    <string name="pm10_title_with_unit">PM10 µg/m³</string>
-    <string name="relative_humidity_title_with_unit">Relative Humidity %</string>
-    <string name="temperature_with_unit">Temperature ºC</string>
-    <string name="pm25_title_with_unit">PM25 µg/m³</string>
-    <string name="no2_title_with_unit">Nitrogen Dioxide µg/m³</string>
-    <string name="nox_title_with_unit">Nitrogen Oxides µg/m³</string>
-    <string name="no_title_with_unit">Nitric Oxide µg/m³</string>
-    <string name="o3_title_with_unit">Ozone µg/m³</string>
-    <string name="co_title_with_unit">Carbon Monoxide µg/m³</string>
+    <string name="um003_title_with_unit">UM003 (particles/cm³)</string>
+    <string name="relative_humidity_title_with_unit">Relative Humidity (%)</string>
+    <string name="temperature_with_unit">Temperature (ºC)</string>
+    <string name="no2_title_with_unit">Nitrogen Dioxide (µg/m³)</string>
+    <string name="nox_title_with_unit">Nitrogen Oxides (µg/m³)</string>
+    <string name="no_title_with_unit">Nitric Oxide (µg/m³)</string>
+    <string name="o3_title_with_unit">Ozone (µg/m³)</string>
+    <string name="co_title_with_unit">Carbon Monoxide (µg/m³)</string>
     <string name="so2_title_with_unit">Sulfur Dioxide µg/m³</string>
     <string name="gas_particles_information">-- Gas and Particles Information --</string>
     <string name="see_historic_7_days">View history of the last 7 days</string>
@@ -42,4 +39,5 @@
     <string name="date">Date: %1$s</string>
     <string name="parameter">Parameter: </string>
     <string name="average">, Average: </string>
+    <string name="open_settings">Abrir Ajustes</string>
 </resources>

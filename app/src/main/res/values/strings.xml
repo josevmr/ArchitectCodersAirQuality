@@ -20,17 +20,17 @@
     <string name="no_description"> Este gas incoloro e inodoro es un contaminante que se forma principalmente a partir de la combustión de combustibles fósiles. Aunque en pequeñas cantidades puede tener un papel en la regulación del flujo sanguíneo y la presión arterial, en concentraciones elevadas es tóxico y puede causar irritación en los ojos, la nariz y la garganta, así como problemas respiratorios. Además, el monóxido de nitrógeno puede reaccionar en la atmósfera para formar dióxido de nitrógeno (NO₂), un contaminante más dañino.</string>
     <string name="not_found_location">Ubicación no encontrada</string>
 
-    <string name="um003_title_with_unit">UM003 partículas/cm³</string>
-    <string name="pm1_title_with_unit">PM1 µg/m³</string>
-    <string name="pm10_title_with_unit">PM10 µg/m³</string>
-    <string name="relative_humidity_title_with_unit">Humedad relativa %</string>
-    <string name="temperature_with_unit">Temperatura ºC</string>
-    <string name="pm25_title_with_unit">PM25 µg/m³</string>
-    <string name="no2_title_with_unit">Dióxio de nitrógeno µg/m³</string>
-    <string name="nox_title_with_unit">Óxidos de nitrógeno µg/m³</string>
-    <string name="no_title_with_unit">Monóxido de nitrógeno µg/m³</string>
-    <string name="o3_title_with_unit">Ozono µg/m³</string>
-    <string name="co_title_with_unit">Monóxido de Carbono µg/m³</string>
+    <string name="um003_title_with_unit">UM003 (partículas/cm³)</string>
+    <string name="pm1_title_with_unit" translatable="false">PM1 (µg/m³)</string>
+    <string name="pm10_title_with_unit" translatable="false">PM10 (µg/m³)</string>
+    <string name="relative_humidity_title_with_unit">Humedad relativa (%)</string>
+    <string name="temperature_with_unit">Temperatura (ºC)</string>
+    <string name="pm25_title_with_unit" translatable="false">PM25 (µg/m³)</string>
+    <string name="no2_title_with_unit">Dióxio de nitrógeno (µg/m³)</string>
+    <string name="nox_title_with_unit">Óxidos de nitrógeno (µg/m³)</string>
+    <string name="no_title_with_unit">Monóxido de nitrógeno (µg/m³)</string>
+    <string name="o3_title_with_unit">Ozono (µg/m³)</string>
+    <string name="co_title_with_unit">Monóxido de Carbono (µg/m³)</string>
     <string name="so2_title_with_unit">Dióxido de azufre µg/m³</string>
     <string name="gas_particles_information">-- Información de gases y partículas --</string>
     <string name="see_historic_7_days">Ver historico de los últimos 7 días</string>
@@ -41,5 +41,8 @@
     <string name="date">Fecha: %1$s</string>
     <string name="parameter">"Parámetro: "</string>
     <string name="average">", Promedio: "</string>
+    <string name="open_settings">Abrir Ajustes</string>
+    <string name="settings_text" translatable="false">Necesitas habilitar el permiso de ubicación en los ajustes para obtener datos de tu localización.</string>
+    <string name="settings_title" translatable="false">Permiso de ubicación necesario</string>
 
 </resources>

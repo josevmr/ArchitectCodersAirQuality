@@ -1,31 +1,31 @@
 package com.practica.calidadaire.ui.screens.historic
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practica.calidadaire.data.DataRepository
 import com.practica.calidadaire.data.model.HistoricDataModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class HistoricScreenViewModel: ViewModel() {
 
-    var state by mutableStateOf(UiState())
-        private set
+    private val _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
 
     private val repository = DataRepository()
 
     fun onUiReady(location: String) {
         viewModelScope.launch {
-            state = UiState(loading = true)
+            _state.value = UiState(loading = true)
 
             val today = LocalDate.now()
             val before7days = today.minusDays(7)
 
-            state = UiState(
+            _state.value = UiState(
                 loading = false,
                 data = repository.fetchHistoricData(before7days.toString(), today.toString(), location)
             )
